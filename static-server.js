@@ -6,7 +6,6 @@ const url = require('url')
 const port = process.argv[2] || 9000 //默认9000端口
 
 __dirname = process.argv[3] || __dirname //默认路径为当前文件夹
-console.log(`__dirname is ${__dirname}`)
 
 http.createServer((req,res)=>{
     const {method} = req
@@ -14,10 +13,11 @@ http.createServer((req,res)=>{
     req.on('error',(err)=>{
         console.log(`on error: ${err}`)
     })
+    
+    console.log(`${method}请求: ${req.url}`)
 
     //判断Get or Post
     if(method === 'GET'){
-        console.log(`这是${method}请求: ${req.url}`)
 
         req.url = req.url === '/' ? '/index.html':req.url
 
@@ -40,7 +40,6 @@ http.createServer((req,res)=>{
 
             })
         }else{
-            console.log("带了参数")
             //处理带参数的get请求
             if(pathObj.pathname === '/test'){
                 res.end(JSON.stringify(query))
@@ -67,3 +66,4 @@ http.createServer((req,res)=>{
 
 
 console.log(`server listing on port ${port}`)
+console.log(`默认访问路径为 ${__dirname}`)
