@@ -40,7 +40,15 @@ http.createServer((req,res)=>{
         }
 
     }else if(method === 'POST'){
-        res.end("POSt请求")
+        //处理POST请求
+        let body = []
+        req.on('data',(chunk)=>{
+            body.push(chunk)
+        }).on('end',()=>{
+            body = Buffer.concat(body).toString() 
+            console.log(`body is ${body}.`)
+        })
+        res.end(`post请求：${body}`)
     }else{
         res.end(`${method} 方式请求超出范围.`)
     }
