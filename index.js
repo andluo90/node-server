@@ -3,7 +3,10 @@ const path = require('path')
 const fs = require('fs')
 const url = require('url')
 
-const port = process.argv[2] || 9000
+const port = process.argv[2] || 9000 //默认9000端口
+
+__dirname = process.argv[3] || __dirname //默认路径为当前文件夹
+console.log(`__dirname is ${__dirname}`)
 
 http.createServer((req,res)=>{
     const {method} = req
@@ -15,10 +18,11 @@ http.createServer((req,res)=>{
     //判断Get or Post
     if(method === 'GET'){
         console.log(`这是${method}请求: ${req.url}`)
+
+        req.url = req.url === '/' ? '/index.html':req.url
+
         let pathObj = url.parse(req.url,true)
         
-        req.url = req.url === '/' ? 'index.html':req.url
-
         let query = pathObj.query
         if(Object.keys(query).length === 0){
             //处理不带参数的get请求
@@ -27,7 +31,7 @@ http.createServer((req,res)=>{
                 if(err){
                     console.log(`${req.method} ${req.url} is not find.`)
                     res.writeHead(404,'Not Find.')
-                    return res.end('<h1>404...</h1>')
+                    return res.end("<h1 style='color:red'>404...</h1>")
                 }
                 
                 res.writeHead(200,'ok')
@@ -41,7 +45,7 @@ http.createServer((req,res)=>{
             if(pathObj.pathname === '/test'){
                 res.end(JSON.stringify(query))
             }else{
-                return res.end('<h1>404...</h1>')
+                return res.end("<h1 style='color:red'>404...</h1>")
             }
         }
 
