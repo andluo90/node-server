@@ -61,7 +61,7 @@ http.createServer((req,res)=>{
     }else{
         res.end(`${method} 方式请求超出范围.`)
     }
-}).listen(parseInt(port))
+}).listen(parseInt(port),'0.0.0.0')
 
 
 
